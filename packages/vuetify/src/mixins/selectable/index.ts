@@ -119,8 +119,23 @@ export default mixins(
           blur: this.onBlur,
           change: this.onChange,
           focus: this.onFocus,
-          keydown: this.onKeydown,
-          click: prevent,
+          keyup: function (e) {
+            if (type === "radio") {
+              const possibleKeys = ["ArrowUp", "ArrowDown","ArrowRight","ArrowLeft", "Space"]
+              if (type === "radio" && possibleKeys.includes(e.code)) {
+                e.target.click();
+                if(e.code==="Space") {
+                  e.target.checked = true;
+                } else {
+                  e.target.checked = !e.target.checked;
+                }
+              }
+            } else if (type === "checkbox") {
+              e.code === "Space" && e.target.click()
+            }
+          },
+          keydown: () => { },
+          click: prevent
         },
         ref: 'input',
       })
